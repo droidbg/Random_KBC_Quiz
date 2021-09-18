@@ -29,7 +29,12 @@ public class MainActivity extends AppCompatActivity {
     String[] questions;
     String options[][];
     int answers[];
-    Random rand;
+    int randIndex;
+    long money[];
+    int moneyIndex;
+   final String RupeeSign="₹";
+
+    Random rand=new Random();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,18 +48,19 @@ public class MainActivity extends AppCompatActivity {
         yesButton=findViewById(R.id.yesButton);
         noButton=findViewById(R.id.noButton);
         lifelineYesNotextView=findViewById(R.id.lifelineYesNotextView);
-        initialize();
+        initializeGame();
         questionGenerate();
-        rand=new Random();
+
 
     }
-    void initialize(){
+    void initializeGame(){
         nooflifeline=3;
+        moneyIndex=0;
 
         questions= new String[]
                 {
                         "What is the full form of URL?",
-                        "Which Indian Institue of Technology is known as Mother of all IIt's?",
+                        "Which Indian Institute of Technology is known as Mother of all IIT's?",
                         "How many players are there in hockey?",
                         "NAME THE VEGETABLE WHICH IS ALSO KNOWN AS FLOWER?",
                         "WHICH PLANET HAS THE 'GREAT RED SPOT'?",
@@ -92,9 +98,10 @@ public class MainActivity extends AppCompatActivity {
 
         answers =new int[]
                 {2,4,3,2,1,1,1,3,4,2,2,1,1,2,2};
+        money=new long[]{1000,2000,3000,5000,10000,20000,40000,80000,160000,320000,640000,1250000,2500000,5000000,10000000};
 }
 void questionGenerate(){
-    int randIndex= rand.nextInt(15);
+    randIndex= rand.nextInt(15);
     while(questions[randIndex].equals(" ")){
         randIndex= rand.nextInt(15);
     }
@@ -113,14 +120,26 @@ void questionGenerate(){
     {
         goButton.setVisibility(view.INVISIBLE);
     }
+
     public void chooseAnswer(View view) {
+        int chosenIndex=Integer.parseInt(view.getTag().toString());
+        if(answers[randIndex]==chosenIndex){
+            Toast.makeText(this, "Correct Answer!!/n"+"Congratulations You have won "+RupeeSign+money[moneyIndex], Toast.LENGTH_SHORT).show();
+            moneyIndex++;
+
+            questionGenerate();
+        }
+        else{
+            Toast.makeText(this, "Incorrect Answer!! ", Toast.LENGTH_SHORT).show();
+
+        }
+
     }
     public void lifelineYesNo(View view) {
        if(view.getTag().toString().equals("no")){
-           Toast.makeText(this, "Ohkay Smarty!!", Toast.LENGTH_SHORT).show();
-           if(nooflifeline>0)
-           {
-               Toast.makeText(this, "You Still have "+nooflifeline+" Remaining", Toast.LENGTH_LONG).show();
+           Toast.makeText(this, "Okay Smarty!!", Toast.LENGTH_SHORT).show();
+           if(nooflifeline>0) {
+               Toast.makeText(this, "You Still have " + nooflifeline + " Lifelines Remaining", Toast.LENGTH_SHORT).show();
 
            }
        }
