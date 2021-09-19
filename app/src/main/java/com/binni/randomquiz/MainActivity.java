@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     Random rand=new Random();
    public void startBackgroundAnimate(){
-        ScrollView scrollView = findViewById(R.id.scrolllayout);
-        AnimationDrawable animationDrawable = (AnimationDrawable) scrollView.getBackground();
+        ConstraintLayout constraintLayout = findViewById(R.id.conslayout);
+        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2000);
         animationDrawable.setExitFadeDuration(4000);
         animationDrawable.start();
@@ -179,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     updateTimer((int)millisUntilFinished/1000);
-                    timerTextView.setText("0:"+String.valueOf(millisUntilFinished/1000));
+
                 }
 
                 @Override
@@ -197,11 +196,12 @@ public class MainActivity extends AppCompatActivity {
         int minutes=secondsLeft/60;
         int seconds=secondsLeft%60;
 //      int seconds=secondsLeft-(minutes*60);
-        String timerDisplay=String.valueOf(minutes) + ":" + String.valueOf(seconds);
-        if(seconds==0&&minutes==0)
+        String timerDisplay=String.valueOf(minutes) + ":";
+        if(seconds<=9)
         {
-            timerDisplay=timerDisplay+"0";
+            timerDisplay+="0";
         }
+        timerDisplay+=String.valueOf(seconds);
         timerTextView.setText(timerDisplay);
     }
 
@@ -235,7 +235,7 @@ public void cancelTimer(){
 }
     private void finishGame() {
         if(gameWin!=true)
-        gamelabelTextView.setText("Game Over!!");
+        gamelabelTextView.setText("Game Over!!\nYou are OUT");
         cancelTimer();
         button0.setClickable(false);
         button1.setClickable(false);
