@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        questionTextView=findViewById(R.id.questionTextView);
         button0=findViewById(R.id.button0);
         button1=findViewById(R.id.button1);
         button2=findViewById(R.id.button2);
@@ -58,10 +57,11 @@ public class MainActivity extends AppCompatActivity {
         timerTextView=findViewById(R.id.timerTextView);
         scoreTextView=findViewById(R.id.scoreTextView);
         gamelabelTextView=findViewById(R.id.gamelabelTextView);
+        questionTextView=findViewById(R.id.questionTextView);
         lifelineYesNotextView=findViewById(R.id.lifelineYesNotextView);
         gameLayout.setVisibility(View.INVISIBLE);
         goButton.setVisibility(View.VISIBLE);
-        start(findViewById(R.id.goButton));
+//        start(findViewById(R.id.goButton));
 
 
     }
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         money=new long[]{1000,2000,3000,5000,10000,20000,40000,80000,160000,320000,640000,1250000,2500000,5000000,10000000};
 }
     public void questionGenerate(){
-    countDownTimer.cancel();
+
     randIndex= rand.nextInt(15);
     while(questions[randIndex].equals(" ")){
         randIndex= rand.nextInt(15);
@@ -137,12 +137,13 @@ public class MainActivity extends AppCompatActivity {
         countDownTimer=  new CountDownTimer(miliseconds,1000){
             @Override
             public void onTick(long millisUntilFinished) {
-                updateTimer((int)miliseconds/1000);
+                updateTimer((int)millisUntilFinished/1000);
+                timerTextView.setText("0:"+String.valueOf(millisUntilFinished/1000));
             }
 
             @Override
             public void onFinish() {
-                gamelabelTextView.setText("DONE!!");
+                finishGame();
             }
         }.start();
     }
@@ -151,6 +152,13 @@ public class MainActivity extends AppCompatActivity {
     public void updateTimer(int secondsleft){
         int minutes=secondsleft/60;
         int seconds=secondsleft%60;
+//      int seconds=secondsleft-(minutes*60);
+        String timerDisplay=String.valueOf(minutes) + ":" + String.valueOf(seconds);
+        if(seconds==0)
+        {
+            timerDisplay=timerDisplay+"0";
+        }
+        timerTextView.setText(timerDisplay);
     }
 
     public void start(View view)
@@ -165,16 +173,32 @@ public class MainActivity extends AppCompatActivity {
         int chosenIndex=Integer.parseInt(view.getTag().toString());
         if(answers[randIndex]==chosenIndex){
             Toast.makeText(this, "Correct Answer!!/n"+"Congratulations You have won "+RupeeSign+money[moneyIndex], Toast.LENGTH_SHORT).show();
-            scoreTextView.setText(RupeeSign+"0"+money[moneyIndex]);
+            scoreTextView.setText(RupeeSign+""+money[moneyIndex]);
             moneyIndex++;
+            cancelTimer();
             questionGenerate();
         }
         else{
             Toast.makeText(this, "Incorrect Answer!!/n You have Lost all your Money... ", Toast.LENGTH_SHORT).show();
-
+            finishGame();
         }
 
     }
+public void cancelTimer(){
+    if(moneyIndex<=7)
+        countDownTimer.cancel();
+}
+    private void finishGame() {
+
+        gamelabelTextView.setText("Game Over!!");
+        cancelTimer();
+        button0.setClickable(false);
+        button1.setClickable(false);
+        button2.setClickable(false);
+        button3.setClickable(false);
+
+    }
+
     public void lifelineYesNo(View view) {
        if(view.getTag().toString().equals("no")){
            Toast.makeText(this, "Okay Smarty!!", Toast.LENGTH_SHORT).show();
