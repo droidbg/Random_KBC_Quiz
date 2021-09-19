@@ -1,6 +1,7 @@
 package com.binni.randomquiz;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.view.View;
@@ -21,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
     Button noButton;
     Button yesButton;
     TextView questionTextView;
+    TextView scoreTextView;
     TextView lifelineYesNotextView;
+    ConstraintLayout gameLayout;
 
     //variables
     ArrayList<String> questionsList=new ArrayList<String>();
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     int randIndex;
     long money[];
     int moneyIndex;
-   final String RupeeSign="₹";
+    final String RupeeSign="₹";
 
     Random rand=new Random();
     @Override
@@ -47,9 +50,12 @@ public class MainActivity extends AppCompatActivity {
         goButton=findViewById(R.id.goButton);
         yesButton=findViewById(R.id.yesButton);
         noButton=findViewById(R.id.noButton);
+        gameLayout=findViewById(R.id.gameLayout);
+        scoreTextView=findViewById(R.id.scoreTextView);
         lifelineYesNotextView=findViewById(R.id.lifelineYesNotextView);
-        initializeGame();
-        questionGenerate();
+        gameLayout.setVisibility(View.INVISIBLE);
+        goButton.setVisibility(View.VISIBLE);
+        start(findViewById(R.id.goButton));
 
 
     }
@@ -100,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 {2,4,3,2,1,1,1,3,4,2,2,1,1,2,2};
         money=new long[]{1000,2000,3000,5000,10000,20000,40000,80000,160000,320000,640000,1250000,2500000,5000000,10000000};
 }
-void questionGenerate(){
+    void questionGenerate(){
     randIndex= rand.nextInt(15);
     while(questions[randIndex].equals(" ")){
         randIndex= rand.nextInt(15);
@@ -116,21 +122,25 @@ void questionGenerate(){
 
 
     }
+
     void start(View view)
     {
-        goButton.setVisibility(view.INVISIBLE);
+        goButton.setVisibility(View.INVISIBLE);
+        gameLayout.setVisibility(View.VISIBLE);
+        initializeGame();
+        questionGenerate();
     }
 
     public void chooseAnswer(View view) {
         int chosenIndex=Integer.parseInt(view.getTag().toString());
         if(answers[randIndex]==chosenIndex){
             Toast.makeText(this, "Correct Answer!!/n"+"Congratulations You have won "+RupeeSign+money[moneyIndex], Toast.LENGTH_SHORT).show();
+            scoreTextView.setText(RupeeSign+"0"+money[moneyIndex]);
             moneyIndex++;
-
             questionGenerate();
         }
         else{
-            Toast.makeText(this, "Incorrect Answer!! ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Incorrect Answer!!/n You have Lost all your Money... ", Toast.LENGTH_SHORT).show();
 
         }
 

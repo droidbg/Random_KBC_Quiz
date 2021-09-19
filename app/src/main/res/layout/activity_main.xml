@@ -8,34 +8,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/scoreTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="#ED5B8C"
-        android:padding="10dp"
-        android:text="₹00"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/timerTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="#FF9800"
-        android:padding="10dp"
-        android:text="0:00"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="wrap_content">
 
     <Button
         android:id="@+id/goButton"
@@ -44,7 +17,7 @@
         android:includeFontPadding="false"
         android:onClick="start"
         android:padding="40dp"
-        android:text="Go!"
+        android:text="@string/go"
         android:textSize="60sp"
         android:visibility="invisible"
         app:backgroundTint="#8BC34A"
@@ -53,167 +26,202 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="Game Started"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/scoreTextView"
-        app:layout_constraintStart_toEndOf="@id/timerTextView"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/buttonline0linearLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/gameLayout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/questionTextView">
-
-        <Button
-            android:id="@+id/button0"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="chooseAnswer"
-            android:layout_margin="2dp"
-
-            android:tag="0"
-            android:text="Answer"
-            android:padding="25dp"
-            android:textSize="15sp" />
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="chooseAnswer"
-            android:layout_margin="2dp"
-            android:tag="1"
-            android:text="Answer"
-            android:padding="25dp"
-            android:textSize="15sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/buttonline1linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonline0linearLayout">
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="chooseAnswer"
-
-            android:layout_margin="2dp"
-            android:tag="2"
-            android:text="Answer"
-            android:padding="25dp"
-            android:textSize="15sp" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="chooseAnswer"
-            android:layout_margin="2dp"
-            android:tag="3"
-            android:text="Answer"
-            android:padding="25dp"
-            android:textSize="15sp"/>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/questionTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/purple_200"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="Question......"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timerTextView" />
-
-    <TextView
-        android:id="@+id/lifelineYesNotextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="25sp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="5dp"
-        android:gravity="center"
-        android:text="Want to Choose a Lifeline?"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonline1linearLayout" />
-
-    <LinearLayout
-        android:id="@+id/lifelineOptionsLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lifelineYesNotextView">
-
-        <Button
-            android:id="@+id/yesButton"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/scoreTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:layout_weight="1"
-            android:onClick="lifelineYesNo"
-            android:padding="20dp"
-            android:tag="yes"
-            android:text="YES"
-            android:textSize="30sp"
-            app:backgroundTint="#36CD3C" />
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="#ED5B8C"
+            android:padding="10dp"
+            android:text="₹0000"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/noButton"
+        <TextView
+            android:id="@+id/timerTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:layout_weight="1"
-            android:onClick="lifelineYesNo"
-            android:padding="20dp"
-            android:tag="no"
-            android:text="NO"
-            android:textSize="30sp"
-            app:backgroundTint="#E86B94" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="#FF9800"
+            android:padding="10dp"
+            android:text="0:00"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Game Started"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/scoreTextView"
+            app:layout_constraintStart_toEndOf="@id/timerTextView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/buttonline0linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/questionTextView">
+
+            <Button
+                android:id="@+id/button0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="chooseAnswer"
+                android:layout_margin="2dp"
+
+                android:tag="0"
+                android:text="Answer"
+                android:padding="25dp"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="chooseAnswer"
+                android:layout_margin="2dp"
+                android:tag="1"
+                android:text="Answer"
+                android:padding="25dp"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonline1linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonline0linearLayout">
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="chooseAnswer"
+
+                android:layout_margin="2dp"
+                android:tag="2"
+                android:text="Answer"
+                android:padding="25dp"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="chooseAnswer"
+                android:layout_margin="2dp"
+                android:tag="3"
+                android:text="Answer"
+                android:padding="25dp"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/questionTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/purple_200"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Question......"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timerTextView" />
+
+        <TextView
+            android:id="@+id/lifelineYesNotextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="25sp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:text="Want to Choose a Lifeline?"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonline1linearLayout" />
+
+        <LinearLayout
+            android:id="@+id/lifelineOptionsLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lifelineYesNotextView">
+
+            <Button
+                android:id="@+id/yesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:onClick="lifelineYesNo"
+                android:padding="20dp"
+                android:tag="yes"
+                android:text="YES"
+                android:textSize="30sp"
+                app:backgroundTint="#36CD3C" />
+
+            <Button
+                android:id="@+id/noButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:onClick="lifelineYesNo"
+                android:padding="20dp"
+                android:tag="no"
+                android:text="NO"
+                android:textSize="30sp"
+                app:backgroundTint="#E86B94" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
