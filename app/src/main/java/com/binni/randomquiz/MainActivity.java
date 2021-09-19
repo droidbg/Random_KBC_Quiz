@@ -113,40 +113,41 @@ public class MainActivity extends AppCompatActivity {
         money=new long[]{1000,2000,3000,5000,10000,20000,40000,80000,160000,320000,640000,1250000,2500000,5000000,10000000};
 }
     public void questionGenerate(){
-
+        cancelTimer();
+        lifelineYesNotextView.setText("Finding New Question");
     randIndex= rand.nextInt(15);
     while(questions[randIndex].equals(" ")){
         randIndex= rand.nextInt(15);
     }
     questionTextView.setText(questions[randIndex]);
     questions[randIndex]=" ";
-
+        lifelineYesNotextView.setText("Found A Question for you");
     button0.setText(options[randIndex][0]);
     button1.setText(options[randIndex][1]);
     button2.setText(options[randIndex][2]);
     button3.setText(options[randIndex][3]);
-    int secondstimelimit=timeLimit(moneyIndex);
-    int miliseconds=(secondstimelimit*1000)+100;
-    if(secondstimelimit==-1)
-    {
-        //No Time Limit
-        Toast.makeText(this, "No Limit For This Question", Toast.LENGTH_SHORT).show();
-        timerTextView.setText("0:00");
-    }
-    else{
-        countDownTimer=  new CountDownTimer(miliseconds,1000){
-            @Override
-            public void onTick(long millisUntilFinished) {
-                updateTimer((int)millisUntilFinished/1000);
-                timerTextView.setText("0:"+String.valueOf(millisUntilFinished/1000));
-            }
+    int timerseconds=timeLimit(moneyIndex);
 
-            @Override
-            public void onFinish() {
-                finishGame();
-            }
-        }.start();
-    }
+        int miliseconds=(timerseconds*1000)+100;
+        if(moneyIndex<=7){
+            countDownTimer=  new CountDownTimer(miliseconds,1000){
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    updateTimer((int)millisUntilFinished/1000);
+                    timerTextView.setText("0:"+String.valueOf(millisUntilFinished/1000));
+                }
+
+                @Override
+                public void onFinish() {
+                    finishGame();
+                }
+            }.start();
+        }
+        else {
+            Toast.makeText(this, "No Limit For This Question", Toast.LENGTH_SHORT).show();
+            timerTextView.setText("0:00");
+        }
+
 
     }
     public void updateTimer(int secondsleft){
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         int seconds=secondsleft%60;
 //      int seconds=secondsleft-(minutes*60);
         String timerDisplay=String.valueOf(minutes) + ":" + String.valueOf(seconds);
-        if(seconds==0)
+        if(seconds==0&&minutes==0)
         {
             timerDisplay=timerDisplay+"0";
         }
@@ -171,21 +172,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void chooseAnswer(View view) {
         int chosenIndex=Integer.parseInt(view.getTag().toString());
-        if(answers[randIndex]==chosenIndex){
-            Toast.makeText(this, "Correct Answer!!/n"+"Congratulations You have won "+RupeeSign+money[moneyIndex], Toast.LENGTH_SHORT).show();
+        if((answers[randIndex]-1)==chosenIndex){
+            Toast.makeText(this, "Correct Answer!!\n"+"Congratulations You have won "+RupeeSign+money[moneyIndex], Toast.LENGTH_SHORT).show();
             scoreTextView.setText(RupeeSign+""+money[moneyIndex]);
             moneyIndex++;
             cancelTimer();
+            if(moneyIndex<=14)
             questionGenerate();
+            else{
+                gamelabelTextView.setText("WON THE GAME THIS IS ALL YOURS!!");
+                finishGame();
+            }
         }
         else{
-            Toast.makeText(this, "Incorrect Answer!!/n You have Lost all your Money... ", Toast.LENGTH_SHORT).show();
-            finishGame();
+           // Toast.makeText(this, "Incorrect Answer!!\n Want to Use a Lifeline??", Toast.LENGTH_SHORT).show();
+
         }
 
     }
 public void cancelTimer(){
-    if(moneyIndex<=7)
+    if(moneyIndex<=7&&moneyIndex>0)
         countDownTimer.cancel();
 }
     private void finishGame() {
@@ -229,7 +235,9 @@ public void cancelTimer(){
              secondstimelimit=30;
          else if(index>=3 && index<=7)
              secondstimelimit=45;
-         else secondstimelimit=-1;
+         else
+             secondstimelimit=1000;
+
          return secondstimelimit;
     }
 
