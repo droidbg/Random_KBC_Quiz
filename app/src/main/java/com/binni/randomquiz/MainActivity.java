@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,8 +24,11 @@ public class MainActivity extends AppCompatActivity {
     Button yesButton;
     TextView questionTextView;
     TextView scoreTextView;
+    TextView gamelabelTextView;
+    TextView timerTextView;
     TextView lifelineYesNotextView;
     ConstraintLayout gameLayout;
+    CountDownTimer countDownTimer;
 
     //variables
     ArrayList<String> questionsList=new ArrayList<String>();
@@ -51,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
         yesButton=findViewById(R.id.yesButton);
         noButton=findViewById(R.id.noButton);
         gameLayout=findViewById(R.id.gameLayout);
+        timerTextView=findViewById(R.id.timerTextView);
         scoreTextView=findViewById(R.id.scoreTextView);
+        gamelabelTextView=findViewById(R.id.gamelabelTextView);
         lifelineYesNotextView=findViewById(R.id.lifelineYesNotextView);
         gameLayout.setVisibility(View.INVISIBLE);
         goButton.setVisibility(View.VISIBLE);
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    void initializeGame(){
+    public void initializeGame(){
         nooflifeline=3;
         moneyIndex=0;
 
@@ -106,7 +112,8 @@ public class MainActivity extends AppCompatActivity {
                 {2,4,3,2,1,1,1,3,4,2,2,1,1,2,2};
         money=new long[]{1000,2000,3000,5000,10000,20000,40000,80000,160000,320000,640000,1250000,2500000,5000000,10000000};
 }
-    void questionGenerate(){
+    public void questionGenerate(){
+    countDownTimer.cancel();
     randIndex= rand.nextInt(15);
     while(questions[randIndex].equals(" ")){
         randIndex= rand.nextInt(15);
@@ -118,12 +125,35 @@ public class MainActivity extends AppCompatActivity {
     button1.setText(options[randIndex][1]);
     button2.setText(options[randIndex][2]);
     button3.setText(options[randIndex][3]);
+    int secondstimelimit=timeLimit(moneyIndex);
+    int miliseconds=(secondstimelimit*1000)+100;
+    if(secondstimelimit==-1)
+    {
+        //No Time Limit
+        Toast.makeText(this, "No Limit For This Question", Toast.LENGTH_SHORT).show();
+        timerTextView.setText("0:00");
+    }
+    else{
+        countDownTimer=  new CountDownTimer(miliseconds,1000){
+            @Override
+            public void onTick(long millisUntilFinished) {
+                updateTimer((int)miliseconds/1000);
+            }
 
-
-
+            @Override
+            public void onFinish() {
+                gamelabelTextView.setText("DONE!!");
+            }
+        }.start();
     }
 
-    void start(View view)
+    }
+    public void updateTimer(int secondsleft){
+        int minutes=secondsleft/60;
+        int seconds=secondsleft%60;
+    }
+
+    public void start(View view)
     {
         goButton.setVisibility(View.INVISIBLE);
         gameLayout.setVisibility(View.VISIBLE);
@@ -167,4 +197,16 @@ public class MainActivity extends AppCompatActivity {
            }
        }
     }
+
+    public int timeLimit(int index)
+    {
+        int secondstimelimit=0;
+         if(index==0 || index==1)
+             secondstimelimit=30;
+         else if(index>=3 && index<=7)
+             secondstimelimit=45;
+         else secondstimelimit=-1;
+         return secondstimelimit;
+    }
+
 }
