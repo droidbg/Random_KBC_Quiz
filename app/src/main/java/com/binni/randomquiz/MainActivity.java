@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     TextView gamelabelTextView;
     TextView timerTextView;
     TextView lifelineYesNotextView;
+    LinearLayout lifelineLayout;
     ConstraintLayout gameLayout;
     CountDownTimer countDownTimer=null;
 
@@ -39,57 +41,25 @@ public class MainActivity extends AppCompatActivity {
     int randIndex;
     long money[];
     int moneyIndex;
+    boolean doubleDipOn;
     final String RupeeSign="₹";
-    boolean gameWin;
+    boolean gameWin,gameOver;
+    int CorrectIndex;
 
     Random rand=new Random();
-   public void startBackgroundAnimate(){
-        ConstraintLayout constraintLayout = findViewById(R.id.conslayout);
-        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(2000);
-        animationDrawable.setExitFadeDuration(4000);
-        animationDrawable.start();
-    }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        startBackgroundAnimate();
-
-
-        button0=findViewById(R.id.button0);
-        button1=findViewById(R.id.button1);
-        button2=findViewById(R.id.button2);
-        button3=findViewById(R.id.button3);
-        goButton=findViewById(R.id.goButton);
-        yesButton=findViewById(R.id.yesButton);
-        noButton=findViewById(R.id.noButton);
-        gameLayout=findViewById(R.id.gameLayout);
-        timerTextView=findViewById(R.id.timerTextView);
-        scoreTextView=findViewById(R.id.scoreTextView);
-        gamelabelTextView=findViewById(R.id.gamelabelTextView);
-        questionTextView=findViewById(R.id.questionTextView);
-        lifelineYesNotextView=findViewById(R.id.lifelineYesNotextView);
-        gameLayout.setVisibility(View.INVISIBLE);
-        goButton.setVisibility(View.VISIBLE);
-
-
-    }
-    public void start(View view)
-    {
-        goButton.setVisibility(View.INVISIBLE);
-        gameLayout.setVisibility(View.VISIBLE);
-        initializeGame();
-        questionGenerate();
-    }
-
     public void initializeGame(){
         nooflifeline=3;
+        gameOver=false;
         moneyIndex=0;
+        doubleDipOn=false;
         gameWin=false;
         countDownTimer=null;
         gamelabelTextView.setText("Game Started");
+        button0.setClickable(true);
+        button1.setClickable(true);
+        button2.setClickable(true);
+        button3.setClickable(true);
+
         questions= new String[]
                 {
                         "What is the full form of URL?",
@@ -132,9 +102,54 @@ public class MainActivity extends AppCompatActivity {
         answers =new int[]
                 {2,4,3,2,1,1,1,3,4,2,2,1,1,2,2};
         money=new long[]{1000,2000,3000,5000,10000,20000,40000,80000,160000,320000,640000,1250000,2500000,5000000,10000000};
-}
+    }
+
+    public void startBackgroundAnimate(){
+        ConstraintLayout constraintLayout = findViewById(R.id.conslayout);
+        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(4000);
+        animationDrawable.start();
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        startBackgroundAnimate();
+
+
+        button0=findViewById(R.id.button0);
+        button1=findViewById(R.id.button1);
+        button2=findViewById(R.id.button2);
+        button3=findViewById(R.id.button3);
+        goButton=findViewById(R.id.goButton);
+        yesButton=findViewById(R.id.yesButton);
+        noButton=findViewById(R.id.noButton);
+        gameLayout=findViewById(R.id.gameLayout);
+        lifelineLayout=findViewById(R.id.lifelineLayout);
+        timerTextView=findViewById(R.id.timerTextView);
+        scoreTextView=findViewById(R.id.scoreTextView);
+        gamelabelTextView=findViewById(R.id.gamelabelTextView);
+        questionTextView=findViewById(R.id.questionTextView);
+        lifelineYesNotextView=findViewById(R.id.lifelineYesNotextView);
+        gameLayout.setVisibility(View.INVISIBLE);
+        goButton.setVisibility(View.VISIBLE);
+        lifelineLayout.setVisibility(View.INVISIBLE);
+
+
+    }
+    public void start(View view)
+    {
+        goButton.setVisibility(View.INVISIBLE);
+        gameLayout.setVisibility(View.VISIBLE);
+        initializeGame();
+        questionGenerate();
+    }
+
 
     public void questionGenerate(){
+        buttoninit();
         cancelTimer();
     randIndex= rand.nextInt(15);
     while(questions[randIndex].equals(" ")){
@@ -178,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     updateTimer((int)millisUntilFinished/1000);
-
+//                    timerTextView.setText("0:"+String.valueOf(millisUntilFinished/1000));
                 }
 
                 @Override
@@ -208,7 +223,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void chooseAnswer(View view) {
         int chosenIndex=Integer.parseInt(view.getTag().toString());
-        if((answers[randIndex]-1)==chosenIndex){
+        CorrectIndex=answers[randIndex]-1;
+        if(CorrectIndex==chosenIndex){
             gamelabelTextView.setText("Correct Answer!!\n"+"Congratulations You have won "+RupeeSign+money[moneyIndex]);
 //            Toast.makeText(this, "Correct Answer!!\n"+"Congratulations You have won "+RupeeSign+money[moneyIndex], Toast.LENGTH_SHORT).show();
             scoreTextView.setText(RupeeSign+""+money[moneyIndex]);
@@ -217,13 +233,21 @@ public class MainActivity extends AppCompatActivity {
             if(moneyIndex<=14)
             questionGenerate();
             else{
-                gamelabelTextView.setText("WON THE GAME, THIS MONEY IS ALL YOURS!!");
+                gamelabelTextView.setText("You are a real Champ,\n Congrats for Winning.\nTHIS MONEY IS ALL YOURS!!");
                 gameWin=true;
                 finishGame();
             }
         }
         else{
-            gamelabelTextView.setText("Incorrect Answer!!\n Want to Use a Lifeline??");
+            gamelabelTextView.setText("Incorrect Answer!!");
+            if(doubleDipOn)
+            {
+                doubleDipOn=false;
+
+            }
+            else {
+                finishGame();
+            }
            // Toast.makeText(this, "Incorrect Answer!!\n Want to Use a Lifeline??", Toast.LENGTH_SHORT).show();
 
         }
@@ -234,8 +258,10 @@ public void cancelTimer(){
         countDownTimer.cancel();
 }
     private void finishGame() {
-        if(gameWin!=true)
-        gamelabelTextView.setText("Game Over!!\nYou are OUT");
+        if(gameWin!=true) {
+            gameOver=true;
+            gamelabelTextView.setText("Game Over!!\nYou are OUT");
+        }
         cancelTimer();
         button0.setClickable(false);
         button1.setClickable(false);
@@ -245,27 +271,90 @@ public void cancelTimer(){
     }
 
     public void lifelineYesNo(View view) {
+        if(gameOver)
+            return;
        if(view.getTag().toString().equals("no")){
-           Toast.makeText(this, "Okay Smarty!!", Toast.LENGTH_SHORT).show();
-           if(nooflifeline>0) {
-               Toast.makeText(this, "You Still have " + nooflifeline + " Lifelines Remaining", Toast.LENGTH_SHORT).show();
+               Toast.makeText(this, "Okay Smarty!!", Toast.LENGTH_SHORT).show();
+           lifelineLayout.setVisibility(View.INVISIBLE);
 
-           }
+           if(nooflifeline>0) {
+                   Toast.makeText(this, "You Still have " + nooflifeline + " Lifelines Remaining", Toast.LENGTH_SHORT).show();
+               }
        }
-       else{
-           if(nooflifeline<=0)
+       else{ //if click on yes button
+           if(nooflifeline<=0) //no lifeline left
            {
+               gamelabelTextView.setText("NO Lifeline Left\nJust make a guess if you have Some guts..");
                Toast.makeText(this, "Sorry!! No LifeLine Remaining.\n", Toast.LENGTH_SHORT).show();
            }
-           else {
+           else { //lifelines is there
 
-//               lifelineYesNotextView.setVisibility(view.INVISIBLE);
-//               yesButton.setVisibility(view.INVISIBLE);
-//               noButton.setVisibility(view.INVISIBLE);
+               lifelineLayout.setVisibility(View.VISIBLE);
+
 
            }
        }
     }
 
+
+    public void lifelineSelect(View view) {
+    view.setVisibility(View.INVISIBLE);
+    view.setClickable(false);
+        int tagVal=Integer.parseInt(view.getTag().toString());
+        switch (tagVal)
+        {
+            case 0://Flip The Question
+                Toast.makeText(this, "Flipping the Question", Toast.LENGTH_SHORT).show();
+                questionGenerate();
+                break;
+            case 1://50:50
+//                CorrectIndex
+                int rind=rand.nextInt(4);
+                while(rind==CorrectIndex)
+                {
+                    rind=rand.nextInt(4);
+                }
+                hideIndex(rind);
+                hideIndex(CorrectIndex);
+
+                break;
+            case 2:
+                //Double Dip
+                doubleDipOn=true;
+                break;
+        }
+        nooflifeline--;
+        lifelineLayout.setVisibility(View.INVISIBLE);
+        }
+
+    private void hideIndex(int i) {
+        switch (i)
+        {
+            case 0:
+                button0.setVisibility(View.INVISIBLE);
+                break;
+            case 1:
+                button1.setVisibility(View.INVISIBLE);
+                break;
+            case 2:
+                button2.setVisibility(View.INVISIBLE);
+                break;
+            case 3:
+                button3.setVisibility(View.INVISIBLE);
+                break;
+        }
+
+    }
+    void buttoninit(){
+        button0.setVisibility(View.VISIBLE);
+        button1.setVisibility(View.VISIBLE);
+        button2.setVisibility(View.VISIBLE);
+        button3.setVisibility(View.VISIBLE);
+        button0.setClickable(true);
+        button1.setClickable(true);
+        button2.setClickable(true);
+        button3.setClickable(true);
+
+    }
 
 }
