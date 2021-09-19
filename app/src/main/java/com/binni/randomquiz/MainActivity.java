@@ -44,12 +44,16 @@ public class MainActivity extends AppCompatActivity {
     boolean doubleDipOn;
     final String RupeeSign="₹";
     boolean gameWin,gameOver;
+    int lifelineAlreadyTaken=0;
     int CorrectIndex;
 
     Random rand=new Random();
-    public void initializeGame(){
+    public void initializeGame()
+    {
+        doubleDipOn=false;
         nooflifeline=3;
         gameOver=false;
+        lifelineAlreadyTaken=0;
         moneyIndex=0;
         doubleDipOn=false;
         gameWin=false;
@@ -149,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void questionGenerate(){
+        doubleDipOn=false;
+        lifelineAlreadyTaken=0;
         buttoninit();
         cancelTimer();
     randIndex= rand.nextInt(15);
@@ -271,8 +277,7 @@ public void cancelTimer(){
     }
 
     public void lifelineYesNo(View view) {
-        if(gameOver)
-            return;
+
        if(view.getTag().toString().equals("no")){
                Toast.makeText(this, "Okay Smarty!!", Toast.LENGTH_SHORT).show();
            lifelineLayout.setVisibility(View.INVISIBLE);
@@ -298,9 +303,15 @@ public void cancelTimer(){
 
 
     public void lifelineSelect(View view) {
+        if(lifelineAlreadyTaken!=0)
+            return;
+        if(gameOver)
+            return;
+        lifelineAlreadyTaken++;
     view.setVisibility(View.INVISIBLE);
     view.setClickable(false);
         int tagVal=Integer.parseInt(view.getTag().toString());
+
         switch (tagVal)
         {
             case 0://Flip The Question
