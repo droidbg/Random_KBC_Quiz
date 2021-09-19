@@ -3,10 +3,12 @@ package com.binni.randomquiz;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,10 +44,21 @@ public class MainActivity extends AppCompatActivity {
     boolean gameWin;
 
     Random rand=new Random();
+   public void startBackgroundAnimate(){
+        ScrollView scrollView = findViewById(R.id.scrolllayout);
+        AnimationDrawable animationDrawable = (AnimationDrawable) scrollView.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(4000);
+        animationDrawable.start();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        startBackgroundAnimate();
+
+
         button0=findViewById(R.id.button0);
         button1=findViewById(R.id.button1);
         button2=findViewById(R.id.button2);
