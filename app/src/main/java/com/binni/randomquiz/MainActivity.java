@@ -28,10 +28,9 @@ public class MainActivity extends AppCompatActivity {
     TextView timerTextView;
     TextView lifelineYesNotextView;
     ConstraintLayout gameLayout;
-    CountDownTimer countDownTimer;
+    CountDownTimer countDownTimer=null;
 
     //variables
-    ArrayList<String> questionsList=new ArrayList<String>();
     int nooflifeline;
     String[] questions;
     String options[][];
@@ -40,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     long money[];
     int moneyIndex;
     final String RupeeSign="₹";
+    boolean gameWin;
 
     Random rand=new Random();
     @Override
@@ -61,14 +61,23 @@ public class MainActivity extends AppCompatActivity {
         lifelineYesNotextView=findViewById(R.id.lifelineYesNotextView);
         gameLayout.setVisibility(View.INVISIBLE);
         goButton.setVisibility(View.VISIBLE);
-//        start(findViewById(R.id.goButton));
 
 
     }
+    public void start(View view)
+    {
+        goButton.setVisibility(View.INVISIBLE);
+        gameLayout.setVisibility(View.VISIBLE);
+        initializeGame();
+        questionGenerate();
+    }
+
     public void initializeGame(){
         nooflifeline=3;
         moneyIndex=0;
-
+        gameWin=false;
+        countDownTimer=null;
+        gamelabelTextView.setText("Game Started");
         questions= new String[]
                 {
                         "What is the full form of URL?",
@@ -93,10 +102,10 @@ public class MainActivity extends AppCompatActivity {
                         {"1.IIT DELHI","2.IIT BOMBAY","3.IIT KANPUR","4.IIT KHARAGPUR"},
                         { "1. FOUR","2.FIVE","3.SIX","4.ELEVEN"},
                         { "1.CAULIFLOWER","2.BROCCOLI","3.CABOAGE","4.JALIPINOES"},
-                        { "1.JUPITER","2.MERCURY","3.NEPTUNE","4.STAURN"},
+                        { "1.JUPITER","2.MERCURY","3.NEPTUNE","4.SATURN"},
                         { "1.RICE","2.WHEAT","3.PULSES","4.VEGETABLES AND FRUITS"},
                         { "1.ATHENS","2.BEIJING","3.INDIA","4.LONDON"},
-                        { "1.TRANSACTIONABLE MONEY","2.PLASTIC NOTES","3.PLASTIC MONEY","4.EASY MONEY"},
+                        { "1.TRANSACTIONAL MONEY","2.PLASTIC NOTES","3.PLASTIC MONEY","4.EASY MONEY"},
                         { "1.HYDROGEN AND NEON","2.NEON AND HELIUM","3.HELIUM AND ARAGON","4.HYDROGEN AND HELIUM"},
                         { "1.JAPAN","2.GERMANY","3.IRAQ","4.AMERICA"},
                         { "1.1997","2.1992","3.1993","4.1995"},
@@ -112,25 +121,48 @@ public class MainActivity extends AppCompatActivity {
                 {2,4,3,2,1,1,1,3,4,2,2,1,1,2,2};
         money=new long[]{1000,2000,3000,5000,10000,20000,40000,80000,160000,320000,640000,1250000,2500000,5000000,10000000};
 }
+
     public void questionGenerate(){
         cancelTimer();
-        lifelineYesNotextView.setText("Finding New Question");
     randIndex= rand.nextInt(15);
     while(questions[randIndex].equals(" ")){
         randIndex= rand.nextInt(15);
     }
     questionTextView.setText(questions[randIndex]);
     questions[randIndex]=" ";
-        lifelineYesNotextView.setText("Found A Question for you");
+
     button0.setText(options[randIndex][0]);
     button1.setText(options[randIndex][1]);
     button2.setText(options[randIndex][2]);
     button3.setText(options[randIndex][3]);
-    int timerseconds=timeLimit(moneyIndex);
+        if(moneyIndex<=7) {
+            SetTimer();
+        }
+        else {
+            Toast.makeText(this, "No Time Limit For This Question", Toast.LENGTH_SHORT).show();
+            timerTextView.setText("∞");
+        }
 
-        int miliseconds=(timerseconds*1000)+100;
-        if(moneyIndex<=7){
-            countDownTimer=  new CountDownTimer(miliseconds,1000){
+
+    }
+    public int timeLimit(int ind)
+    {
+        int timerSeconds=0;
+        if(ind>=0 && ind<=1)
+            timerSeconds=30;
+        else if(ind>=2 && ind<=7)
+            timerSeconds=45;
+        else
+            timerSeconds=0;
+
+        return timerSeconds;
+    }
+
+    private void SetTimer() {
+        int timerSeconds=timeLimit(moneyIndex);
+        int milliseconds=(timerSeconds*1000)+100;
+
+            countDownTimer=  new CountDownTimer(milliseconds,1000){
                 @Override
                 public void onTick(long millisUntilFinished) {
                     updateTimer((int)millisUntilFinished/1000);
@@ -142,18 +174,16 @@ public class MainActivity extends AppCompatActivity {
                     finishGame();
                 }
             }.start();
-        }
-        else {
-            Toast.makeText(this, "No Limit For This Question", Toast.LENGTH_SHORT).show();
-            timerTextView.setText("0:00");
-        }
+
+
 
 
     }
-    public void updateTimer(int secondsleft){
-        int minutes=secondsleft/60;
-        int seconds=secondsleft%60;
-//      int seconds=secondsleft-(minutes*60);
+
+    public void updateTimer(int secondsLeft){
+        int minutes=secondsLeft/60;
+        int seconds=secondsLeft%60;
+//      int seconds=secondsLeft-(minutes*60);
         String timerDisplay=String.valueOf(minutes) + ":" + String.valueOf(seconds);
         if(seconds==0&&minutes==0)
         {
@@ -162,40 +192,36 @@ public class MainActivity extends AppCompatActivity {
         timerTextView.setText(timerDisplay);
     }
 
-    public void start(View view)
-    {
-        goButton.setVisibility(View.INVISIBLE);
-        gameLayout.setVisibility(View.VISIBLE);
-        initializeGame();
-        questionGenerate();
-    }
 
     public void chooseAnswer(View view) {
         int chosenIndex=Integer.parseInt(view.getTag().toString());
         if((answers[randIndex]-1)==chosenIndex){
-            Toast.makeText(this, "Correct Answer!!\n"+"Congratulations You have won "+RupeeSign+money[moneyIndex], Toast.LENGTH_SHORT).show();
+            gamelabelTextView.setText("Correct Answer!!\n"+"Congratulations You have won "+RupeeSign+money[moneyIndex]);
+//            Toast.makeText(this, "Correct Answer!!\n"+"Congratulations You have won "+RupeeSign+money[moneyIndex], Toast.LENGTH_SHORT).show();
             scoreTextView.setText(RupeeSign+""+money[moneyIndex]);
             moneyIndex++;
             cancelTimer();
             if(moneyIndex<=14)
             questionGenerate();
             else{
-                gamelabelTextView.setText("WON THE GAME THIS IS ALL YOURS!!");
+                gamelabelTextView.setText("WON THE GAME, THIS MONEY IS ALL YOURS!!");
+                gameWin=true;
                 finishGame();
             }
         }
         else{
+            gamelabelTextView.setText("Incorrect Answer!!\n Want to Use a Lifeline??");
            // Toast.makeText(this, "Incorrect Answer!!\n Want to Use a Lifeline??", Toast.LENGTH_SHORT).show();
 
         }
 
     }
 public void cancelTimer(){
-    if(moneyIndex<=7&&moneyIndex>0)
+    if(moneyIndex<=8 && countDownTimer!=null)
         countDownTimer.cancel();
 }
     private void finishGame() {
-
+        if(gameWin!=true)
         gamelabelTextView.setText("Game Over!!");
         cancelTimer();
         button0.setClickable(false);
@@ -228,17 +254,5 @@ public void cancelTimer(){
        }
     }
 
-    public int timeLimit(int index)
-    {
-        int secondstimelimit=0;
-         if(index==0 || index==1)
-             secondstimelimit=30;
-         else if(index>=3 && index<=7)
-             secondstimelimit=45;
-         else
-             secondstimelimit=1000;
-
-         return secondstimelimit;
-    }
 
 }
