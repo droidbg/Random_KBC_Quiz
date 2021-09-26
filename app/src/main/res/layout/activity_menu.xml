@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_list1"
+    tools:context=".MenuActivity">
+
+    <Button
+        android:id="@+id/playButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:includeFontPadding="false"
+        android:onClick="play"
+        android:padding="10dp"
+        android:text="Play"
+        android:textAllCaps="false"
+        android:textSize="40sp"
+        app:backgroundTint="#F48FB1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.31" />
+
+    <Button
+        android:id="@+id/privayButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        android:includeFontPadding="false"
+        android:onClick="privacy"
+        android:padding="10dp"
+        android:text="Privacy"
+        android:textAllCaps="false"
+        android:textSize="40sp"
+        app:backgroundTint="#E579F8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gameRuleButton" />
+    <Button
+        android:id="@+id/gameRuleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        android:includeFontPadding="false"
+        android:onClick="gameRules"
+        android:padding="10dp"
+        android:text="Game Rules"
+        android:textAllCaps="false"
+        android:textSize="40sp"
+        app:backgroundTint="#EB1EF627"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,8 +24,10 @@ public class MainActivity extends AppCompatActivity {
     Button goButton;
     Button noButton;
     Button yesButton;
+    Button resetButton;
     TextView questionTextView;
     TextView scoreTextView;
+    TextView resetTextView;
     TextView gamelabelTextView;
     TextView timerTextView;
     TextView lifelineYesNotextView;
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     boolean gameWin,gameOver;
     int lifelineAlreadyTaken=0;
     int CorrectIndex;
+    int lastindex=0;
+
 
     Random rand=new Random();
     public void initializeGame()
@@ -57,13 +61,17 @@ public class MainActivity extends AppCompatActivity {
         moneyIndex=0;
         doubleDipOn=false;
         gameWin=false;
+
         countDownTimer=null;
+        lifelineLayout.setClickable(true);
+
         gamelabelTextView.setText("Game Started");
         button0.setClickable(true);
         button1.setClickable(true);
         button2.setClickable(true);
         button3.setClickable(true);
-
+        gameLayout.setClickable(true);
+        visibleLifelines();
         questions= new String[]
                 {
                         "What is the full form of URL?",
@@ -74,20 +82,27 @@ public class MainActivity extends AppCompatActivity {
                         "WHAT IS THE STAPLE OOD OF 1/3rd Population of the world?",
                         "What was the Venue Of olympic 2014?",
                         "Credits Cards Are also known as?",
-                        "Mostly which gases are found in the planet JUPITRER?",
+                        "Mostly which gases are found in the planet JUPITER?",
                         "Worlds first hydrogen powered train was launched in which country?",
                         "OxfordDictionaries.com launched in which year?",
                         "who was the founder of brahmo samaj?",
                         "Ruler of Mysor was?",
                         "what is the national reptile of india?",
-                        "What is the rank of indian passport at the 20 henley passport index?"
+                        "What is the rank of indian passport at the 20 henley passport index?",
+                        "Which of the following corresponds to ‘ek bataa do’",
+                        "Harry Potter ends up marrying?",
+                        "Which of these is a operating system?",
+                        "Bahubali festival is related to?",
+                        "What was BLACKPINK’s debut album called?",
+                        "BLACKPINK collaborated with Lady Gaga on which track?",
+                        "What is the largest big cat?","What is the largest animal on Earth?"
                 };
         options=new String[][]
                 {
                         { "Universal Resource Locator","Uniform Resource Locator","Uniform Research Locator","United Resource Locator"},
                         {"1.IIT DELHI","2.IIT BOMBAY","3.IIT KANPUR","4.IIT KHARAGPUR"},
                         { "1. FOUR","2.FIVE","3.SIX","4.ELEVEN"},
-                        { "1.CAULIFLOWER","2.BROCCOLI","3.CABOAGE","4.JALIPINOES"},
+                        { "1.CAULIFLOWER","2.BROCCOLI","3.CABBAGES","4.JALAPENOS"},
                         { "1.JUPITER","2.MERCURY","3.NEPTUNE","4.SATURN"},
                         { "1.RICE","2.WHEAT","3.PULSES","4.VEGETABLES AND FRUITS"},
                         { "1.ATHENS","2.BEIJING","3.INDIA","4.LONDON"},
@@ -99,13 +114,24 @@ public class MainActivity extends AppCompatActivity {
                         { "1.Hyder Ali","2.Muhammad Ghori","3.Yaduraya Wodlysr","4.Sunni Islam"},
                         { "1.Anaconda","2.King Cobra","3.Snail","4.Turtle"},
                         { "1.55th","2.86th","3.4th","4.77th"},
+                        {"Pura","Sawa","Adha","Pauna"} ,
+                        {"hermione","Ron","Gennie","Snape"},
+                        {"Doors","Portico","Gates","Windows"},
+                        {"Islam","Hinduism","Buddhism","Jainism"},
+                        {"Boombayah","Kill This Love","Blackpink In Your Area"," Forever Young"},
+                        {"Sour Candy","Love Me Right","Babylon","1000 Doves" },
+                        {"Lion", "Tiger", "Cheetah","Leopard"},
+                        {"The African elephant","The blue whale", "The sperm whale"," The giant squid"
+                        }
+
 
 
                 };
 
         answers =new int[]
-                {2,4,3,2,1,1,1,3,4,2,2,1,1,2,2};
+                {2,4,3,2,1,1,1,3,4,2,2,1,1,2,2,3,3,4,4,1,1,2,2};
         money=new long[]{1000,2000,3000,5000,10000,20000,40000,80000,160000,320000,640000,1250000,2500000,5000000,10000000};
+        lastindex = answers.length;
     }
 
     public void startBackgroundAnimate(){
@@ -130,23 +156,29 @@ public class MainActivity extends AppCompatActivity {
         goButton=findViewById(R.id.goButton);
         yesButton=findViewById(R.id.yesButton);
         noButton=findViewById(R.id.noButton);
+        resetButton=findViewById(R.id.resetButton);
         gameLayout=findViewById(R.id.gameLayout);
         lifelineLayout=findViewById(R.id.lifelineLayout);
         timerTextView=findViewById(R.id.timerTextView);
         scoreTextView=findViewById(R.id.scoreTextView);
         gamelabelTextView=findViewById(R.id.gamelabelTextView);
         questionTextView=findViewById(R.id.questionTextView);
+        resetTextView=findViewById(R.id.resetTextView);
         lifelineYesNotextView=findViewById(R.id.lifelineYesNotextView);
-        gameLayout.setVisibility(View.INVISIBLE);
-        goButton.setVisibility(View.VISIBLE);
+//        gameLayout.setVisibility(View.INVISIBLE);
+//        goButton.setVisibility(View.VISIBLE);
         lifelineLayout.setVisibility(View.INVISIBLE);
-
+        //removing Go button and directly opening the game;
+        start(findViewById(R.id.button0));
 
     }
     public void start(View view)
     {
-        goButton.setVisibility(View.INVISIBLE);
+//        goButton.setVisibility(View.INVISIBLE);
+        resetButton.setVisibility(View.INVISIBLE);
+        resetTextView.setVisibility(View.INVISIBLE);
         gameLayout.setVisibility(View.VISIBLE);
+        scoreTextView.setText("₹0");
         initializeGame();
         questionGenerate();
     }
@@ -157,9 +189,9 @@ public class MainActivity extends AppCompatActivity {
         lifelineAlreadyTaken=0;
         buttoninit();
         cancelTimer();
-    randIndex= rand.nextInt(15);
+    randIndex= rand.nextInt(lastindex);
     while(questions[randIndex].equals(" ")){
-        randIndex= rand.nextInt(15);
+        randIndex= rand.nextInt(lastindex);
     }
     questionTextView.setText(questions[randIndex]);
     questions[randIndex]=" ";
@@ -267,7 +299,16 @@ public void cancelTimer(){
         if(gameWin!=true) {
             gameOver=true;
             gamelabelTextView.setText("Game Over!!\nYou are OUT");
+            gameLayout.setVisibility(View.INVISIBLE);
+            gameoverDisplay();
         }
+        else{
+            gameLayout.setClickable(false);
+            lifelineLayout.setClickable(false);
+
+
+        }
+lifelineLayout.setVisibility(View.INVISIBLE);
         cancelTimer();
         button0.setClickable(false);
         button1.setClickable(false);
@@ -300,18 +341,27 @@ public void cancelTimer(){
            }
        }
     }
+public void gameoverDisplay(){
+    resetButton.setVisibility(View.VISIBLE);
+    resetTextView.setVisibility(View.VISIBLE);
+    if(moneyIndex!=0)
+    resetTextView.setText("Game Over!! Won: ₹"+ money[moneyIndex-1]);
+    else
+        resetTextView.setText("Game Over!! Won: ₹0.");
 
+}
 
     public void lifelineSelect(View view) {
         if(lifelineAlreadyTaken!=0)
             return;
-        if(gameOver)
+        if(gameOver || gameWin)
             return;
         lifelineAlreadyTaken++;
     view.setVisibility(View.INVISIBLE);
-    view.setClickable(false);
-        int tagVal=Integer.parseInt(view.getTag().toString());
 
+        int tagVal=Integer.parseInt(view.getTag().toString());
+        nooflifeline--;
+        lifelineLayout.setVisibility(View.INVISIBLE);
         switch (tagVal)
         {
             case 0://Flip The Question
@@ -319,14 +369,10 @@ public void cancelTimer(){
                 questionGenerate();
                 break;
             case 1://50:50
-//                CorrectIndex
-                int rind=rand.nextInt(4);
-                while(rind==CorrectIndex)
-                {
-                    rind=rand.nextInt(4);
-                }
-                hideIndex(rind);
-                hideIndex(CorrectIndex);
+                int hide=-1;
+                CorrectIndex=answers[randIndex]-1;
+               hide= hideWrongIndex(CorrectIndex);
+               hideWrongIndex(hide);
 
                 break;
             case 2:
@@ -334,10 +380,19 @@ public void cancelTimer(){
                 doubleDipOn=true;
                 break;
         }
-        nooflifeline--;
-        lifelineLayout.setVisibility(View.INVISIBLE);
+
         }
 
+public int hideWrongIndex(int hide){
+
+    int rind=rand.nextInt(4);
+    while(rind==CorrectIndex || rind==hide )
+    {
+        rind=rand.nextInt(4);
+    }
+    hideIndex(rind);
+return rind;
+}
     private void hideIndex(int i) {
         switch (i)
         {
@@ -367,5 +422,13 @@ public void cancelTimer(){
         button3.setClickable(true);
 
     }
+public void visibleLifelines(){
+        Button lifeline1=findViewById(R.id.lifeline1);
+        Button lifeline2=findViewById(R.id.lifeline2);
+        Button lifeline3=findViewById(R.id.lifeline3);
+        lifeline1.setVisibility(View.VISIBLE);
+        lifeline2.setVisibility(View.VISIBLE);
+        lifeline3.setVisibility(View.VISIBLE);
 
+}
 }
