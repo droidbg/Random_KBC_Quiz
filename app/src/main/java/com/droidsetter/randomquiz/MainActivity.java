@@ -73,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
         Quiz_Set quiz=new Quiz_Set();
         questions=quiz.questionSet;
         options=quiz.optionsSet;
-        answers =quiz.answersSet;
-        money=quiz.money;
+        answers =quiz.answersIndexSet;
+        money=quiz.moneySet;
 //        money=quiz.moneySet;
-        lastindex = answers.length;
+        lastindex = answers.size();
     }
 
 
@@ -99,16 +99,16 @@ public class MainActivity extends AppCompatActivity {
         buttoninit();
         cancelTimer();
         randIndex= rand.nextInt(lastindex);
-        while(questions[randIndex].equals(" ")){
+        while(questions.get(randIndex).equals(" ")){
             randIndex= rand.nextInt(lastindex);
         }
-        questionTextView.setText(questions[randIndex]);
-        questions[randIndex]=" ";
+        questionTextView.setText(questions.get(randIndex));
+        questions.set(randIndex," ");
 
-        button0.setText(options[randIndex][0]);
-        button1.setText(options[randIndex][1]);
-        button2.setText(options[randIndex][2]);
-        button3.setText(options[randIndex][3]);
+        button0.setText(options.get(randIndex).get(0));
+        button1.setText(options.get(randIndex).get(1));
+        button2.setText(options.get(randIndex).get(2));
+        button3.setText(options.get(randIndex).get(3));
         if(moneyIndex<=7) {
             SetTimer();
         }
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void chooseAnswer(View view) {
         int chosenIndex=Integer.parseInt(view.getTag().toString());
-        CorrectIndex=answers[randIndex]-1;
+        CorrectIndex=answers.get(randIndex)-1;
         if(CorrectIndex==chosenIndex){
             gamelabelTextView.setText("Correct Answer!!\n"+"Congratulations You have won "+RupeeSign+money.get(moneyIndex));
 //            Toast.makeText(this, "Correct Answer!!\n"+"Congratulations You have won "+RupeeSign+money[moneyIndex], Toast.LENGTH_SHORT).show();
@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1://50:50
                 int hide=-1;
-                CorrectIndex=answers[randIndex]-1;
+                CorrectIndex=answers.get(randIndex)-1;
                 hide= hideWrongIndex(CorrectIndex);
                 hideWrongIndex(hide);
 
@@ -371,11 +371,11 @@ public class MainActivity extends AppCompatActivity {
 
     //variables
     int nooflifeline;
-    String[] questions;
-    String options[][];
-    int answers[];
+//    String[] questions;
+
+//    int answers[];
     int randIndex;
-    Vector<Integer> money;
+
 //    long money[];
     int moneyIndex;
     boolean doubleDipOn;
@@ -385,4 +385,9 @@ public class MainActivity extends AppCompatActivity {
     int CorrectIndex;
     int lastindex=0;
     Random rand=new Random();
+
+    Vector<Integer> money;
+    Vector<String> questions;
+    Vector<Vector<String>> options;
+    Vector<Integer> answers;
 }
