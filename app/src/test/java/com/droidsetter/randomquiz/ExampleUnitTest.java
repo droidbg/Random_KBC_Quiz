@@ -1,4 +1,4 @@
-package com.binni.randomquiz;
+package com.droidsetter.randomquiz;
 
 import org.junit.Test;
 

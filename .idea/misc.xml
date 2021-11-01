@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Droid_AndroidStudioProjects/app/src/main/res/drawable/backg.xml" value="0.26510416666666664" />
         <entry key="..\:/Droid_AndroidStudioProjects/app/src/main/res/drawable/gradient_1.xml" value="0.2546875" />
         <entry key="..\:/Droid_AndroidStudioProjects/app/src/main/res/drawable/gradient_2.xml" value="0.2546875" />
         <entry key="..\:/Droid_AndroidStudioProjects/app/src/main/res/drawable/gradient_3.xml" value="0.2546875" />
@@ -12,7 +13,7 @@
         <entry key="..\:/Droid_AndroidStudioProjects/app/src/main/res/drawable/gradient_list.xml" value="0.2546875" />
         <entry key="..\:/Droid_AndroidStudioProjects/app/src/main/res/layout/activity_game_rule.xml" value="0.223731884057971" />
         <entry key="..\:/Droid_AndroidStudioProjects/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/Droid_AndroidStudioProjects/app/src/main/res/layout/activity_menu.xml" value="0.23854166666666668" />
+        <entry key="..\:/Droid_AndroidStudioProjects/app/src/main/res/layout/activity_menu.xml" value="0.25" />
         <entry key="..\:/Droid_AndroidStudioProjects/app/src/main/res/layout/activity_privacy.xml" value="0.23854166666666668" />
       </map>
     </option>

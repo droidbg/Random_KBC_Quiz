@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+<!--    Bright Colors fromBackground-->
+    <color name="darkBlue">#0F1E71</color>
+    <color name="blackShade">#0A0B0D</color>
+    <color name="lightDarkBlue">#1237A6</color>
+    <color name="lightlightblue">#0F5CBF</color>
+    <color name="brightBlue">#113DBF</color>
 </resources>

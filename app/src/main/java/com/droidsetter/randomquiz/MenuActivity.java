@@ -1,20 +1,24 @@
-package com.binni.randomquiz;
+package com.droidsetter.randomquiz;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 
+import droidsetter.randomquiz.R;
+
 public class MenuActivity extends AppCompatActivity {
-Intent intent;
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        startBackgroundAnimate();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
     }
 
     public void play(View view) {
@@ -36,11 +40,5 @@ Intent intent;
         intent=new Intent(this,GameRuleActivity.class);
         startActivity(intent);
     }
-    public void startBackgroundAnimate(){
-        ConstraintLayout constraintLayout = findViewById(R.id.menuConstrain);
-        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(2000);
-        animationDrawable.setExitFadeDuration(4000);
-        animationDrawable.start();
-    }
+
 }

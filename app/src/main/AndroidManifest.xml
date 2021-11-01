@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.binni.randomquiz">
+    package="droidsetter.randomquiz">
 <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RandomQuiz">
         <activity
-            android:name=".GameRuleActivity"
+            android:name="com.droidsetter.randomquiz.GameRuleActivity"
             android:exported="true" />
         <activity
-            android:name=".PrivacyActivity"
+            android:name="com.droidsetter.randomquiz.PrivacyActivity"
             android:exported="true" />
         <activity
-            android:name=".MenuActivity"
+            android:name="com.droidsetter.randomquiz.MenuActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,9 +25,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.droidsetter.randomquiz.MainActivity"
             android:exported="true">
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
